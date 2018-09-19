@@ -1,0 +1,94 @@
+{% paginate search.results by 10 %}
+
+<div class="page-width">
+  {% if search.results_count == 0 or search.performed == false %}
+    <div class="empty-page-content text-center">
+      <div class="searchresult">
+         <h1 class="h2">{{ 'general.search.title' | t }}</h1>
+      </div>
+  {% else %}
+    <div class="section-header text-center">
+        <div class="searchresult">
+      <h1 class="h2">{{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}</h1>
+      </div>
+          {% endif %}
+       </div>
+      <div class="container">
+        <div class="serachpadding">
+        
+         {% if search.performed and search.results_count == 0 %}
+         <h3 class="has-line">{{ 'general.search.no_results_html' | t: terms: search.terms }}</h3>
+        {% endif %}
+        <div class="grid">
+          <div class="grid__item medium-up--one-half">
+            <form action="/search" method="get" role="search" class="search">
+              <div class="input-group">
+                <input type="search"
+                  id="SearchInput"
+                  class="input-group__field search__input"
+                  name="q"
+                  value="{{ search.terms | escape }}"
+                  placeholder="{{ 'general.search.placeholder' | t }}"
+                  aria-label="{{ 'general.search.placeholder' | t }}"
+                  autofocus>
+                
+                  <button class="btn search__submit" type="submit"> <svg viewBox="0 0 512 512" class="icon icon-search" role="presentation" focusable="false" aria-hidden="true"><path d="M102 341c-65-66-65-173 0-239 32-32 75-49 120-49s87 17 119 49c66 66 66 173 0 239-32 32-74 50-119 50s-88-18-120-50m397 109L398 349c61-85 54-204-23-280-42-43-97-64-153-64S111 26 69 69c-85 84-85 222 0 306 42 43 97 64 153 64 45 0 89-14 127-42l101 102c7 6 16 10 24 10 9 0 18-4 25-10 13-14 13-35 0-49" fill="#fff"/></svg><span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+       </div>
+        
+      </div>
+ 
+</div>
+
+
+{% if search.performed %}
+  {% if search.results_count > 0 %}
+    
+  {% endif %}
+  <div class="page-width list-view-items">
+    <div class="container">
+      <div class="product searchproduct">
+    {% for item in search.results %}
+      
+      <div class="col-sm-3">
+         <div class="products">
+          <a href="{{ item.url }}" class="list-view-item">
+            {% if item.object_type == 'product' %}
+              {% include 'product-card-list', product: item %}
+            {% else %}
+              {% if item.image %}
+                <div class="list-view-item__image-column">
+                  <div class="list-view-item__image-wrapper">
+                    <img class="list-view-item__image" src="{{ item.image.src | img_url: '1000x1000' }}" alt="{{ item.image.alt | escape }}">
+                  </div>
+                </div>
+              {% endif %}
+
+              <div class="list-view-item__title-column">
+                <div class="productname">{{ item.title }}</div>
+                <div class="">
+                  {% if item.published_at %}{{ item.published_at | date: "%b %d, %Y" }} &#8212; {% endif %}
+                  {{ item.content | strip_html | truncate: 200 }}
+                </div>
+              </div>
+            {% endif %}
+          </a>
+        </div>
+        
+      </div>
+      
+      
+    {% endfor %}
+      </div>
+  </div>
+  </div>
+
+  {% if paginate.pages > 1 %}
+    {% include 'pagination' %}
+  {% endif %}
+{% endif %}
+
+{% endpaginate %}

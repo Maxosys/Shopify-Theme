@@ -1,0 +1,154 @@
+<div class="stacks apperal">
+    <div class="container">
+      <h2>Merch</h2>
+      <div class="sep"></div>
+
+      <div class="merchproduct">
+         
+        {% if collections.merch.products.size > 0 %}
+
+
+        
+{% for product in collections.merch.products limit:3 %}
+  
+        <div class="col-sm-6">
+          <div class="merch">
+            <div class="styles_imgPreview">
+               <a href="{{ product.url }}" class="styles_img merchman"><img src="{{ product.featured_image | product_img_url: 'large'  }}"></a>
+              
+            </div>
+            <div class="info">
+              <h5 class="productTitle">{{ product.title | escape  }}</h5>
+              <span class="price">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span>
+              <div class="buttons">
+                <!--<button class="addtocart" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{ product.url | within: collection | replace: '/', '-' }}" >Add to Cart</button>-->
+                <a href="{{ product.url }}" class="learnMore">Learn More</a>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+       
+     <div id="myModal{{ product.url | within: collection | replace: '/', '-' }}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      
+      </div>
+      <div class="modal-body">
+        <div class="product-deatil">
+          <h3>{{ product.title }}</h3>
+          <div class="product-price-rating">
+            <div class="price"><span class="newPrice">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span></div>
+            <div class="product-rating">
+              <div class="rating">
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              </div>
+             
+            </div>
+          </div>
+
+          <p class="intro">{{ product.description | truncate: 400 }}</p>
+
+          
+<form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+  {% if product.url == "/products/zyno-sports-protein-shaker" %}
+   <label> Selecte Shaker:- </label><select name="id" id="productSelect" class="product-single__variants ">
+              {% for variant in product.variants %}
+                {% if variant.available %}
+
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+
+                {% else %}
+                  <option disabled="disabled">
+                    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+  {% else %}
+  <label> Selecte Size:- </label> <select name="id" id="productSelect" class="product-single__variants">
+              {% for variant in product.variants %}
+                {% if variant.available %}
+
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+
+                {% else %}
+                  <option disabled="disabled">
+                    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+  {% endif %}
+<div class="product-single__quantity{% unless settings.product_quantity_enable %} is-hidden{% endunless %}">
+             <div class="qty-btn">
+            <div class="qty-block">
+              <div class="qty">
+                 
+                <input type="text" name="quantity" maxlength="12" value="1" title="" class="input-text" />
+                <div class="qty_inc_dec">
+                  <i class="increment" onclick="incrementQty()"><i class="fa fa-angle-up"></i></i>
+                  <i class="decrement" onclick="decrementQty()"><i class="fa fa-angle-down"></i></i>
+                </div>
+              </div>
+            </div>
+               <button type="submit" name="add" id="AddToCart" class="addtocart">
+              <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+            </button>
+            </div>
+  
+  </div>
+            
+   <div class="addtocart-btn">
+            <div class="product-form__item product-form__item--submit">
+             <p class="btn"><a href="{{ product.url }}">View More</a></p>
+
+            </div>
+       </div>
+          </form>
+
+          <div class="styles_productMeta_1qgv1">
+            <span class="styles_moneyback_GLmBh">100% Money Back Guarantee</span>
+            <span class="styles_freeShipping_kb4M4">Free Shipping</span>
+            <span class="styles_fdaApproved_2_8wL">Made in an FDA inspected facility</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div>
+       
+     
+	
+   
+
+		
+        {% endfor %}
+
+
+{% endif %}
+        
+
+
+
+
+
+      </div>
+       
+       
+
+        
+    </div>
+  </div>
+
+
+ 

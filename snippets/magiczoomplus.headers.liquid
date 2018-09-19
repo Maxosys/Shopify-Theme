@@ -1,0 +1,67 @@
+
+    {% if template contains 'product' %}
+    {% assign MagicToolboxUseMagicScroll = 'No' %}
+    {{ 'magiczoomplus.js' | asset_url | script_tag }}
+    {{ 'magiczoomplus.css' | asset_url | stylesheet_tag }}
+    {% if MagicToolboxUseMagicScroll == 'Yes' %}
+    {{ 'magicscroll.js' | asset_url | script_tag }}
+    {{ 'magicscroll.css' | asset_url | stylesheet_tag }}
+    {% endif %}
+    {{ 'magiczoomplus.additional.css' | asset_url | stylesheet_tag }}
+    <script type="text/javascript">
+    mzOptions = {
+        'zoomWidth':'auto',
+        'zoomHeight':'auto',
+        'zoomPosition':'right',
+        'zoomDistance':15,
+        'selectorTrigger':'click',
+        'transitionEffect':true,
+        'cssClass':'',
+        'lazyZoom':false,
+        'rightClick':false,
+        'zoomMode':'zoom',
+        'zoomOn':'hover',
+        'upscale':true,
+        'smoothing':true,
+        'variableZoom':false,
+        'zoomCaption':'off',
+        'expand':'window',
+        'expandZoomMode':'zoom',
+        'expandZoomOn':'click',
+        'expandCaption':true,
+        'closeOnClickOutside':true,
+        'hint':'once',
+        'textHoverZoomHint':'Hover to zoom',
+        'textClickZoomHint':'Click to zoom',
+        'textExpandHint':'Click to expand',
+        'textBtnClose':'Close',
+        'textBtnNext':'Next',
+        'textBtnPrev':'Previous'
+    }
+    mzMobileOptions = {
+        'zoomMode':'zoom',
+        'textHoverZoomHint':'Touch to zoom',
+        'textClickZoomHint':'Double tap to zoom',
+        'textExpandHint':'Tap to expand'
+    }
+    {% if MagicToolboxUseMagicScroll == 'Yes' %}
+    MagicScrollOptions = {
+        'width':'auto',
+        'height':'auto',
+        'orientation':'horizontal',
+        'mode':'scroll',
+        'items':'3',
+        'speed':600,
+        'autoplay':0,
+        'loop':'infinite',
+        'step':'auto',
+        'arrows':'inside',
+        'pagination':false,
+        'easing':'cubic-bezier(.8, 0, .5, 1)',
+        'scrollOnWheel':'auto',
+        'lazy-load':false
+    }
+    {% endif %}
+    </script>
+    {{ 'magiczoomplus.sirv.js' | asset_url | script_tag }}
+    {% endif %}

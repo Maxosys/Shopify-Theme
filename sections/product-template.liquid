@@ -1,0 +1,480 @@
+<div class="" itemscope itemtype="http://schema.org/Product" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true">
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: '800x' }}">
+
+  {% comment %}
+    Get first variant, or deep linked one
+  {% endcomment %}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign product_image_zoom_size = '1024x1024' -%}
+  {%- assign product_image_scale = '2' -%}
+  {%- assign enable_zoom = section.settings.enable_zoom -%}
+
+  {% case section.settings.image_size %}
+    {% when 'small' %}
+      {%- assign product_image_width = 'medium-up--one-third' -%}
+      {%- assign product_description_width = 'medium-up--two-thirds' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-third' -%}
+      {%- assign height = 345 -%}
+    {% when 'medium' %}
+      {%- assign product_image_width = 'medium-up--one-half' -%}
+      {%- assign product_description_width = 'medium-up--one-half' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-quarter' -%}
+      {%- assign height = 530 -%}
+    {% when 'large' %}
+      {%- assign product_image_width = 'medium-up--two-thirds' -%}
+      {%- assign product_description_width = 'medium-up--one-third' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-fifth' -%}
+      {%- assign height = 720 -%}
+    {% when 'full' %}
+      {%- assign product_image_width = '' -%}
+      {%- assign product_description_width = '' -%}
+      {%- assign product_thumbnail_width = 'medium-up--one-eighth' -%}
+      {%- assign height = 1090 -%}
+      {%- assign enable_zoom = false -%}
+  {% endcase %}
+<div class="breadcrumbs clearfix">
+    <div class="container"> 
+ <ul>
+   {% if product.url != "/products/womens-performance-racerback" and product.url != "/products/mens-performance-crew" and product.url != "/products/zyno-sports-protein-shaker" %}
+        <li><a  href="https://zyno-sportss.myshopify.com">ZYnosports</a></li> -
+        <li><a href="https://zyno-sportss.myshopify.com/pages/supplement">Supplement</a></li> - 
+         <li><span class="breadcrumb_last"> {{ product.title }}</span></li>
+   {% else %}
+    <li><a  href="https://zyno-sportss.myshopify.com">ZYnosports</a></li> -
+        <li><a href="https://zyno-sportss.myshopify.com/pages/merch">Merch</a></li> - 
+         <li><span class="breadcrumb_last"> {{ product.title }}</span></li>
+   {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="detail">
+    <div class="container">
+      <div class="col-sm-7">
+        <div class="preview">
+          <div class="preview-pic">
+            <div class="tab-paness">
+            <div id="slider" class="flexslider {{ product_image_width }}{% if section.settings.image_size == 'full' %} product-single__photos--full{% endif %}"/>
+            {%- assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+      <ul class = "slides">
+              {% for image in product.images %}
+        {% capture img_id %}FeaturedImage-{{ section.id }}-{{ image.id }}{% endcapture %}
+        {% capture img_class %}product-featured-img{% endcapture %}
+        {% capture zoom_img_id %}FeaturedImageZoom-{{ section.id }}-{{ image.id }}{% endcapture %}
+        {% capture img_wrapper_id %}{{ zoom_img_id }}-wrapper{% endcapture %}
+        {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+        {% include 'image-style' with small_style: true, width: height, height: height, wrapper_id: img_wrapper_id, img_id: img_id %}
+
+        <div id="{{ img_wrapper_id }}" class="product-single__photo-wrapper js">
+          <div id="{{ zoom_img_id }}" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%;" class="product-single__photo{% if enable_zoom %} js-zoom-enabled{% endif %}{% if product.images.size > 1 %} product-single__photo--has-thumbnails{% endif %}{% unless featured_image == image %} hide{% endunless %}" data-image-id="{{ image.id }}"{% if enable_zoom %} data-zoom="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}"{% endif %}>
+            <li><img id="{{ img_id }}"
+                 class="feature-row__image {{ img_class }} lazyload{% unless featured_image == image %} lazypreload{% endunless %}"
+                 src="{{ image | img_url: 'master' }}"
+                 data-src="{{ img_url }}"
+                 data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                 data-aspectratio="{{ image.aspect_ratio }}"
+                 data-sizes="auto"
+                 alt="{{ image.alt | escape }}">
+            </li></div>
+        </div>
+      {% endfor %}
+
+      <noscript>
+        {% capture product_image_size %}{{ height }}x{% endcapture %}
+        <img src="{{ featured_image | img_url: product_image_size, scale: product_image_scale }}" alt="{{ featured_image.alt }}" id="FeaturedImage-{{ section.id }}" class="product-featured-img" style="max-width: {{ height }}px;">
+        </noscript></ul></div></div>
+          </div>
+<div id="sliderr" class="flexslider {% if enable_thumbnail_slides == true %} thumbnails-slider--active{% endif %}">
+          <ul class="slides">
+            {% for image in product.images %}
+              <li class="grid__item {{ product_thumbnail_width }} product-single__thumbnails-item js">
+                <a href="{{ image.src | img_url: product_image_zoom_size, scale: product_image_scale }}"
+                   class="text-link product-single__thumbnail product-single__thumbnail--{{ section.id }}"
+                   data-thumbnail-id="{{ image.id }}"
+                   {% if enable_zoom %}data-zoom="{{ image.src | img_url: product_image_zoom_size, scale: product_image_scale }}"{% endif %}>
+                     <img class="product-single__thumbnail-image" src="{{ image.src | img_url: '110x110', scale: 2 }}" alt="{{ image.alt | escape }}">
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <div class="product-deatil">
+          <h3>{{ product.title }}</h3>
+          <div class="product-price-rating">
+            <div class="productprice">{% if current_variant.compare_at_price > current_variant.price %}
+                <!--<span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>-->
+                <s id="ComparePrice-{{ section.id }}">{{ current_variant.compare_at_price | money }}</s>
+                <span class="product-price__price product-price__price-{{ section.id }} product-price__sale product-price__sale--single">
+                  <span id="ProductPrice-{{ section.id }}"
+                    itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+                    {{ current_variant.price | money }}
+                  </span>
+                  
+                </span>
+            {% else %}
+              <!--<span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>-->
+              <s id="ComparePrice-{{ section.id }}" class="hide">{{ current_variant.compare_at_price | money }}</s>
+              <span class="product-price__price product-price__price-{{ section.id }}">
+                <span id="ProductPrice-{{ section.id }}"
+                  itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+                  {{ current_variant.price | money }}
+                </span>
+                
+              </span>
+            {% endif %}</div>
+            <div class="product-rating">
+              <div class="rating">
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              </div>
+             
+            </div>
+          </div>
+
+          <p class="intro">{{ product.description | truncate: 389 }}</p>
+
+          
+<form action="/cart/add" method="post" enctype="multipart/form-data" class="product-form product-form-{{ section.id }}{% unless section.settings.show_variant_labels %} product-form--hide-variant-labels{% endunless %}" data-section="{{ section.id }}">
+ {% if product.url == "/products/zyno-sports-protein-shaker" %}
+  <label> <span class="variant-nameshker"> {{ product.options }} </span>  <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="shaeker">
+              {% for variant in product.variants %}
+                {% if variant.available %}
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                    {{ variant.title }}
+                  </option>
+                {% else %}
+    	
+                  <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+             
+    {% endif %}
+              {% endfor %}
+            </select>
+   
+  
+  
+  {% unless product.options.size == 1 and product.variants[0].title == 'Default Title' %}
+              {% for option in product.options_with_values %}
+                <div class="selector-wrapper js product-form__item">
+                  
+                  <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input shaker" id="SingleOptionSelector-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+                    {% for value in option.values %}
+                      <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endfor %}
+            {% endunless %}
+    
+{% if product.available and product.variants.size > 1 %}
+    
+  {% for option in product.options %}
+    {% include 'swatch' with option %}
+  {% endfor %}
+{% endif %}
+           
+
+            {% if section.settings.show_quantity_selector %}
+              <div class="product-form__item product-form__item--quantity">
+                <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+                <input type="number" id="Quantity" name="quantity" value="1" min="1" class="product-form__input" pattern="[0-9]*">
+              </div>
+            {% endif %}
+          <div class="qty-btn">
+            <div class="qty-block">
+              <div class="qty">
+                 
+                <input type="text" name="quantity" maxlength="12" value="1" title="" class="input-text" />
+                <div class="qty_inc_dec">
+                  <i class="increment" onclick="incrementQty()"><i class="fa fa-angle-up"></i></i>
+                  <i class="decrement" onclick="decrementQty()"><i class="fa fa-angle-down"></i></i>
+                </div>
+              </div>
+            </div>
+ 
+       <div class="addtocart-btn">
+            <div class="product-form__item product-form__item--submit">
+              <button type="submit" name="ATCButton" id="AddToCart-{{ section.id }}" {% unless current_variant.available %}disabled="disabled"{% endunless %} class="product-form__cart-submit{% if product.options.size == 1 and product.variants[0].title == 'Default Title' %} product-form__cart-submit--small{% endif %}">
+                <span id="{{ section.id }}">
+                  {% unless current_variant.available %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% else %}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {% endunless %}
+                </span>
+              </button>
+            </div>
+       </div>
+  {% else %}
+    <label> <span class="variant-name"> {{ product.options }} </span>  <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+              {% for variant in product.variants %}
+                {% if variant.available %}
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                    {{ variant.title }}
+                  </option>
+                {% else %}
+    	
+                  <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+             
+    {% endif %}
+              {% endfor %}
+            </select>
+   
+  
+  
+  {% unless product.options.size == 1 and product.variants[0].title == 'Default Title' %}
+              {% for option in product.options_with_values %}
+                <div class="selector-wrapper js product-form__item">
+                  
+                  <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input" id="SingleOptionSelector-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+                    {% for value in option.values %}
+                      <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endfor %}
+            {% endunless %}
+    
+{% if product.available and product.variants.size > 1 %}
+    
+  {% for option in product.options %}
+    {% include 'swatch' with option %}
+  {% endfor %}
+{% endif %}
+           
+
+            {% if section.settings.show_quantity_selector %}
+              <div class="product-form__item product-form__item--quantity">
+                <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+                <input type="number" id="Quantity" name="quantity" value="1" min="1" class="product-form__input" pattern="[0-9]*">
+              </div>
+            {% endif %}
+          <div class="qty-btn">
+            <div class="qty-block">
+              <div class="qty">
+                 
+                <input type="text" name="quantity" maxlength="12" value="1" title="" class="input-text" />
+                <div class="qty_inc_dec">
+                  <i class="increment" onclick="incrementQty()"><i class="fa fa-angle-up"></i></i>
+                  <i class="decrement" onclick="decrementQty()"><i class="fa fa-angle-down"></i></i>
+                </div>
+              </div>
+            </div>
+ 
+       <div class="addtocart-btn">
+            <div class="product-form__item product-form__item--submit">
+              <button type="submit" name="ATCButton" id="AddToCart-{{ section.id }}" {% unless current_variant.available %}disabled="disabled"{% endunless %} class="product-form__cart-submit{% if product.options.size == 1 and product.variants[0].title == 'Default Title' %} product-form__cart-submit--small{% endif %}">
+                <span id="{{ section.id }}">
+                  {% unless current_variant.available %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% else %}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {% endunless %}
+                </span>
+              </button>
+            </div>
+       </div>
+ {% endif %}
+          </form>
+
+          <div class="styles_productMeta_1qgv1">
+            <span class="styles_moneyback_GLmBh">100% Money Back Guarantee</span>
+            <span class="styles_freeShipping_kb4M4">Free Shipping</span>
+            <span class="styles_fdaApproved_2_8wL">Made in an FDA inspected facility</span>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+
+
+
+  <div class="product-desc">
+    <div class="wizard">
+      <div class="wizard-inner">
+        <div class="container">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">Product Information</a>
+            </li>
+            {% if product.url != "/products/womens-performance-racerback" and product.url != "/products/mens-performance-crew" and product.url != "/products/zyno-sports-protein-shaker" %}
+            <li role="presentation" class="">
+              <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">Ingredients & Use</a>
+            </li>
+            {% endif %}
+            <li role="presentation" class="">
+              <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">Product  Reviews</a>
+            </li>       
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="container">
+          <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="step1">
+              <p class="intro">{{ product.description }}</p>
+            </div>
+
+
+            <div class="tab-pane" role="tabpanel" id="step2">
+              <p>Are you sick and tired of pre-workout drinks that make you sick and tired? </p>
+              <p> Of upset stomachs, jitters, nausea, and the dreaded post-workout crash?</p>
+              <p> Do you wish your pre-workout supplement gave you sustained energy and more focus and motivation to train? <br> Do you wish it gave you noticeably better workouts and helped you hit PRs?</p>
+              <p> If you’re nodding your head, then you’re going to love PULSE.</p>
+              <p> You see, when we set out to create it, we wanted to accomplish several things.</p>
+
+              <div class="text-heading">We wanted to boost energy levels without making <br> you feel like you’re going to have a heart attack.</div>
+
+              <p>It’s hard to have a good workout when you’re tweaked out on too many stimulants and more focused on not dying than anything else. </p>
+              <p> That’s why we went light on the stimulants and included the amino acid L-theanine, which provides <br> you with a smoother, more enjoyable energy rush.</p>
+
+
+              <div class="text-heading">We wanted there to be no crash.</div>
+
+              <p>You know how it goes.</p>
+              <p> You’re chugging along in your workout and suddenly, as if a switch were flipped, the bench looks like a fantastic place to take a nap. You want to stop curling and curl up and pass out instead.</p>
+              <p> Well, you’ll get none of that with PULSE.</p>
+              <p>It’s formulated to provide sustained energy that doesn’t flicker out in the middle of a workout or leave you burned out afterward.</p>
+            </div>
+
+            <div class="tab-pane" role="tabpanel" id="step3">
+               <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="toprated-products stacks apperal">
+    <div class="container">
+      <h2>top rated products</h2>
+      <div class="sep"></div>
+      <div class="product">
+          
+              {% if collections.Supplement.products.size > 0 %}
+
+{% for product in collections.Supplement.products limit:4%}
+          <div class="col-sm-3">
+            <div class="products">
+              <a href="{{ product.url }}"><img src="{{ product.featured_image | product_img_url: 'medium' }}"></a>
+              <div class="desc">
+                <div class="productname">
+                  <h3>{{ product.title | escape  }}</h3>
+                </div>
+                <div class="left-content">
+                  <div class="rating">
+                    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                  </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+{% endfor %}
+
+{% endif %}
+          </div>
+
+  
+    </div>
+
+
+  </div>
+   
+  {% if collection %}
+  <div class="text-center return-link-wrapper">
+    <a href="{{ collection.url }}" class="btn btn--secondary btn--has-icon-before return-link">
+      {% include 'icon-arrow-left' %}
+      {{ 'products.product.back_to_collection' | t: title: collection.title }}
+    </a>
+  </div>
+{% endif %}
+ </div>
+{% unless product == empty %}
+  <script type="application/json" id="ProductJson-{{ section.id }}">
+    {{ product | json }}
+  </script>
+{% endunless %}
+<style>
+  .product-single__photo{
+    padding-top: 0px !important;
+}
+  </style>
+    
+{% schema %}
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "full",
+            "label": "Full-width"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quantity_selector",
+        "label": "Show quantity selector",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_variant_labels",
+        "label": "Show variant labels",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_zoom",
+        "label": "Enable image zoom",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

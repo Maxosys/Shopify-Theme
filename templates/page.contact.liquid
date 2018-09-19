@@ -1,0 +1,48 @@
+<div class="stacks apperal contact">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <p>If you have any questions regarding us or our products or need help  <br> with supplementation in general, please do reach out!  we’re happy to help!</p>
+      <div class="sep"></div>
+      <div class="col-sm-5">
+        <div class="address">
+          <i class="fa fa-address-card" aria-hidden="true"></i>
+          <h5>Address</h5>
+          <p> 801 S Hope St., Los Angeles, CA 90017</p>
+          <p>Phone: (213) 282-7293</p>
+          <p>Email: info@zynosports.com</p>
+        </div>
+      </div>
+      <div class="col-sm-7">
+        <div class="contactform">
+           {% form 'contact' %}
+
+          {% if form.posted_successfully? %}
+            <p class="note form-success">
+              {{ 'contact.form.post_success' | t }}
+            </p>
+          {% endif %}
+
+          {{ form.errors | default_errors }}
+       
+            <div class="row">
+
+            <div class="col-xs-6 col-md-6 form-group">
+            <input class="form-control" id="name" name="contact[name" placeholder="Name" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}" type="text" />
+            
+              </div>
+
+            <div class="col-xs-6 col-md-6 form-group">
+            <input class="form-control" id="email" name="contact[email]" placeholder="Email" type="email" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" class="{% if form.errors contains 'email' %}input--error{% endif %}" />
+            
+              </div>
+            </div>
+
+            <textarea class="form-control" id="message" name="contact[body]" placeholder="Message" rows="5">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            
+          <button class="btn btn-primary pull-right suubmit" type="submit" value="{{ 'contact.form.submit' | t }}">Submit</button>
+         
+        {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>

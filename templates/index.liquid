@@ -1,0 +1,511 @@
+{%comment%}
+{{ content_for_index }}
+{%endcomment%}
+
+
+<div class="banner">
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="{{ "banner.jpg" | asset_url }}" alt="First slide">
+                      
+                        <div class="carousel-caption">
+                          
+                          <span>THE MOST EFFECTIVE </span><br> <span class="sportp">SPORTS SUPPLEMENTS </span>
+							
+                          <p class="scientp">Scientifically proven to enhance exercise performance</p>
+                          <a href="https://zyno-sportss.myshopify.com/pages/supplement"><button class="addtocart" >SEE FOR YOURSELF</button></a>
+                         
+                          </div>
+                    </div>
+      </div>
+    </div> 
+  </div>
+
+
+  <div class="blue-strip">
+    <div class="container">
+      <span class="naturally">
+        
+        <img src="{{ "leave.png" | asset_url }}" class="icon">
+        <b>Science</b> <br> Backed Ingredients
+      </span>
+
+      <span class="made">
+        
+        <img src="{{ "plus.png" | asset_url }}" class="icon">
+        <b>Clinically</b> <br> Effective Dosages
+      </span>
+
+      <span class="no-blends">
+        
+        <img src="{{ "blends.png" | asset_url }}" class="icon">
+        <b>No Proprietary </b> <br>Blends
+      </span> 
+      <span class="no-fillers">
+        
+        <img src="{{ "fillers.png" | asset_url }}" class="icon">
+        <b>No Fillers</b> <br> Or Additives
+      </span>
+    </div>
+  </div>
+
+
+  <div class="stacks">
+    <div class="container">
+      <h2>Featured Stacks</h2>
+      <p>A full months supply of all the necessary supplements to reach your fitness goals</p>
+      <div class="sep"></div>
+    </div>
+
+
+    {% if collections.stack.products.size > 0 %}
+
+{% for product in collections.stack.products limit:2%}
+       {% assign mod = forloop.index | modulo: 2 %}
+      {% if mod == 0 %}
+        <div class="womenstack">
+          <a href="{{ product.url }}"><span class="menimage"><img src="{{ product.featured_image | product_img_url: 'master' }}"></span></a>
+          <div class="content">
+          
+             
+            <div class="popular" style="color:#b240d2; border-bottom:5px solid #b240d2">Most Popular Stack For Women</div>
+            <div class="mainheading">{{ product.title | escape  }} </div>
+            <div class="pricng-rating">
+              <div class="price"><span class="newPrice">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span></div>
+              <div class="rating">
+               <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              </div>
+            </div>
+
+            <div class="buttons">
+                <!--<button class="addtocart" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{ product.url | within: collection | replace: '/', '-' }}" >Add to Cart</button>-->
+                <a class="learnMore" href="{{ product.url }}">Learn More</a>
+            </div>
+          </div>
+        </div>
+    <div id="myModal{{ product.url | within: collection | replace: '/', '-' }}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      
+      </div>
+      <div class="modal-body">
+        <div class="product-deatil">
+          <h3>{{ product.title }}</h3>
+          <div class="product-price-rating">
+            <div class="price"><span class="newPrice">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span></div>
+            <div class="product-rating">
+              <div class="rating">
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              </div>
+             
+            </div>
+          </div>
+
+          <p class="intro">{{ product.description | truncate: 400 }}</p>
+
+          
+<form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+  <label>Selecte Flavor:-</label><select name="id" id="productSelect" class="product-single__variants">
+              {% for variant in product.variants %}
+                {% if variant.available %}
+
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+
+                {% else %}
+                  <option disabled="disabled">
+                    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+<div class="product-single__quantity{% unless settings.product_quantity_enable %} is-hidden{% endunless %}">
+             <div class="qty-btn">
+            <div class="qty-block" id="quantyblock">
+              <div class="qty">
+                 
+                <input type="text" name="quantity" maxlength="12" value="1" title="" class="input-text" />
+                <div class="qty_inc_dec">
+                  <i class="increment" onclick="incrementQty()"><i class="fa fa-angle-up"></i></i>
+                  <i class="decrement" onclick="decrementQty()"><i class="fa fa-angle-down"></i></i>
+                </div>
+              </div>
+            </div>
+               <button type="submit" name="add" id="AddToCart" class="addtocart">
+              <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+            </button>
+            </div>
+  </div>
+            
+   <div class="addtocart-btn">
+            <div class="product-form__item product-form__item--submit">
+             <p class="btn"><a href="{{ product.url }}">View More</a></p>
+
+            </div>
+       </div>
+          </form>
+
+          <div class="styles_productMeta_1qgv1">
+            <span class="styles_moneyback_GLmBh">100% Money Back Guarantee</span>
+            <span class="styles_freeShipping_kb4M4">Free Shipping</span>
+            <span class="styles_fdaApproved_2_8wL">Made in an FDA inspected facility</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div>
+      {% else %}
+      <div class="menstack">
+          <a href="{{ product.url }}"><span class="menimage"> <img src="{{ product.featured_image | product_img_url: 'master' }}"></span></a>
+          <div class="content"> 
+          
+             
+            <div class="popular"style="color:#235ea8; border-bottom:5px solid #235ea8">Most Popular Stack For men</div>
+            <div class="mainheading">{{ product.title | escape  }}</div>
+            <div class="pricng-rating">
+              <div class="price"><span class="newPrice">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span></div>
+              <div class="rating">
+               <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              </div>
+            </div>
+
+            <div class="buttons">
+                <!--<button class="addtocart" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{ product.url | within: collection | replace: '/', '-' }}" >Add to Cart</button>-->
+              <a class="learnMore" href="{{ product.url }}">Learn More</a>
+            </div>
+          </div>
+        </div>
+    
+    <div id="myModal{{ product.url | within: collection | replace: '/', '-' }}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      
+      </div>
+      <div class="modal-body">
+        <div class="product-deatil">
+          <h3>{{ product.title }}</h3>
+          <div class="product-price-rating">
+            <div class="price"><span class="newPrice">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span></div>
+            <div class="product-rating">
+              <div class="rating">
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              </div>
+             
+            </div>
+          </div>
+
+          <p class="intro">{{ product.description | truncate: 400 }}</p>
+
+          
+<form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+  <label> Selecte Flavor:- </label><select name="id" id="productSelect" class="product-single__variants">
+              {% for variant in product.variants %}
+  
+                {% if variant.available %}
+
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+
+                {% else %}
+                  <option disabled="disabled">
+                    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+<div class="product-single__quantity{% unless settings.product_quantity_enable %} is-hidden{% endunless %}">
+             <div class="qty-btn">
+            <div class="qty-block">
+              <div class="qty">
+                 
+                <input type="text" name="quantity" maxlength="12" value="1" title="" class="input-text" />
+                <div class="qty_inc_dec">
+                  <i class="increment" onclick="incrementQty()"><i class="fa fa-angle-up"></i></i>
+                  <i class="decrement" onclick="decrementQty()"><i class="fa fa-angle-down"></i></i>
+                </div>
+              </div>
+            </div>
+               <button type="submit" name="add" id="AddToCart" class="addtocart">
+              <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+            </button>
+            </div>
+  </div>
+            
+   <div class="addtocart-btn">
+            <div class="product-form__item product-form__item--submit">
+             <p class="btn"><a href="{{ product.url }}">View More</a></p>
+
+            </div>
+       </div>
+          </form>
+
+          <div class="styles_productMeta_1qgv1">
+            <span class="styles_moneyback_GLmBh">100% Money Back Guarantee</span>
+            <span class="styles_freeShipping_kb4M4">Free Shipping</span>
+            <span class="styles_fdaApproved_2_8wL">Made in an FDA inspected facility</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div>
+       
+    {% endif %}
+       {% endfor %}
+
+{% endif %}
+     
+  </div>
+
+
+
+  <div class="stacks">
+     <div class="container">
+        <h2>Most Popular Products</h2>
+        <div class="sep"></div>
+        <div class="product">
+   
+          {% if collections.Supplement.products.size > 0 %}
+
+{% for product in collections.Supplement.products limit:4%}
+          <div class="col-sm-3">
+            <div class="products">
+              <div class="item-box-hover">
+                <div class="box-inner">
+                  <div class="actions">
+                    <div class="buttons">    
+                       <!--<button class="addtocart" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{ product.id | within: collection | replace: '/', '-' }}" >Add to Cart</button>-->
+                        
+         
+                      <a href="{{ product.url }}" class="learnMore">Learn More</a>
+                    </div>  
+                  </div>
+                </div>
+              </div>
+              
+              {% assign instructions = product.metafields.instructions %}
+              
+			{% assign key = 'popular product' %}
+              {% unless instructions == empty %}
+             
+               <span class="badge-popular">{{ instructions[key] }}</span> 
+             
+              {% endunless %}
+              <a href="{{ product.url }}"><img src="{{ product.featured_image | product_img_url: 'master' }}"></a>
+              <div class="desc">
+                <div class="productname">
+                  <h3>{{ product.title | escape  }}</h3>
+                </div>
+                <div class="left-content">
+                  <div class="rating">
+                   <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                  </div>
+                  <div class="price"><span class="newPrice">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span></div>
+                  <a class="learnMore mobilelearnmore" href="{{ product.url }}">Learn More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        <div id="myModal{{ product.id | within: collection | replace: '/', '-' }}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      
+      </div>
+      <div class="modal-body">
+        <div class="product-deatil">
+          <h3>{{ product.title }}</h3>
+          <div class="product-price-rating">
+            <div class="price"><span class="newPrice">{% if product.variants.first.compare_at_price > product.variants.first.price %} <del> ${{ product.variants.first.compare_at_price | money_without_currency | remove: '.00' }} </del> {% endif %} <span> ${{ product.variants.first.price | money_without_currency | remove: '.00' }} </span></span></div>
+            <div class="product-rating">
+              <div class="rating">
+                <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+              </div>
+             
+            </div>
+          </div>
+
+          <p class="intro">{{ product.description | truncate: 400 }}</p>
+<form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+  <label> Selecte Flavor:- </label> <select name="id" id="productSelect" class="product-single__variants">
+              {% for variant in product.variants %}
+                {% if variant.available %}
+
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+
+                {% else %}
+                  <option disabled="disabled">
+                    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+<div class="product-single__quantity{% unless settings.product_quantity_enable %} is-hidden{% endunless %}">
+             <div class="qty-btn">
+            <div class="qty-block">
+              <div class="qty">
+                 
+                <input type="text" name="quantity" maxlength="12" value="1" title="" class="input-text" />
+                <div class="qty_inc_dec">
+                  <i class="increment" onclick="incrementQty()"><i class="fa fa-angle-up"></i></i>
+                  <i class="decrement" onclick="decrementQty()"><i class="fa fa-angle-down"></i></i>
+                </div>
+              </div>
+            </div>
+                <button type="submit" name="add" id="AddToCart" class="addtocart">
+              <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+            </button>
+            </div>
+  </div>
+           
+   <div class="addtocart-btn">
+            <div class="product-form__item product-form__item--submit">
+             <p class="btn"><a href="{{ product.url }}">View More</a></p>
+
+            </div>
+       </div>
+          </form>
+
+          <div class="styles_productMeta_1qgv1">
+            <span class="styles_moneyback_GLmBh">100% Money Back Guarantee</span>
+            <span class="styles_freeShipping_kb4M4">Free Shipping</span>
+            <span class="styles_fdaApproved_2_8wL">Made in an FDA inspected facility</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+
+  </div>
+</div>     
+          
+          {% endfor %}
+
+{% endif %}
+ 
+  
+        </div>
+    </div>
+  </div>
+
+
+  <div class="product-select stacks">
+    <div class="container">
+      <h2>Which Product Is Right For Me?</h2>
+      <div class="sep"></div>
+      <div class="which-product">
+        <a class="lose-weight" href="https://zyno-sportss.myshopify.com/pages/supplement"> <span>Weight & Fat Loss</span> </a>
+        <a class="recover-faster" href="https://zyno-sportss.myshopify.com/pages/supplement"> <span>Endurance & Performance</span> </a>
+        <a class="build-muscle" href="https://zyno-sportss.myshopify.com/pages/supplement"> <span>Muscle & Strength</span> </a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="testimoisls stacks">
+    <div class="container">
+      <h2>What Our Customers Are Saying</h2>
+      
+      <div class="sep"></div>
+       <div id="testimonial-slider" class="owl-carousel">
+         
+          <div class="testimonial">
+            <div class="reviews">
+              <a href="https://zyno-sportss.myshopify.com/pages/supplement"><img src="{{ "buildfrontstrawberry.png" | asset_url }}"></a>
+              <h2>BUILD - Explosive Pumps & Mass Builder</h2>
+              <div class="rating">
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+              </div>
+              <blockquote><p>My third time to order this product! Safe to say I've had great results!</p></blockquote>
+              <p class="name">Amanda G.</p>
+              <div class="date"> <i class="fa fa-calendar" aria-hidden="true"></i> 5/1/2017</div>
+              <div class="readmore-btn"> <a href="https://zyno-sportss.myshopify.com/pages/supplement" class="">read more</a></div>
+            </div>            
+          </div>
+
+          <div class="testimonial">
+            <div class="reviews">
+              <a href="https://zyno-sportss.myshopify.com/pages/supplement"><img src="{{ "cutfrontorange.png" | asset_url }}"></a>
+              <h2>CUT - Extreme Fat Loss & Thermogenics</h2>
+              <div class="rating">
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+              </div>
+              <blockquote><p>My third time to order this product! Safe to say I've had great results!</p></blockquote>
+              <p class="name">Amanda G.</p>
+              <div class="date"> <i class="fa fa-calendar" aria-hidden="true"></i> 5/1/2017</div>
+              <div class="readmore-btn"> <a href="https://zyno-sportss.myshopify.com/pages/supplement" class="">read more</a></div>
+            </div>            
+          </div>
+
+          <div class="testimonial">
+            <div class="reviews">
+              <a href="https://zyno-sportss.myshopify.com/pages/supplement"><img src="{{ "energyfrontwatermelon.png" | asset_url }}"></a>
+              <h2>ENERGY - Extreme Energy & Fast Recovery</h2>
+              <div class="rating">
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+              </div>
+              <blockquote><p>My third time to order this product! Safe to say I've had great results!</p></blockquote>
+              <p class="name">Amanda G.</p>
+              <div class="date"> <i class="fa fa-calendar" aria-hidden="true"></i> 5/1/2017</div>
+              <div class="readmore-btn"> <a href="https://zyno-sportss.myshopify.com/pages/supplement" class="">read more</a></div>
+            </div>            
+          </div>
+
+          <div class="testimonial">
+            <div class="reviews">
+              <a href="https://zyno-sportss.myshopify.com/pages/supplement"><img src="{{ "proteinfront.png" | asset_url }}"></a>
+              <h2>Whey+ Protein Powder</h2>
+              <div class="rating">
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+                <i aria-hidden="true" class="fa fa-star"></i>
+              </div>
+              <blockquote><p>My third time to order this product! Safe to say I've had great results!</p></blockquote>
+              <p class="name">Amanda G.</p>
+              <div class="date"> <i class="fa fa-calendar" aria-hidden="true"></i> 5/1/2017</div>
+              <div class="readmore-btn"> <a href="https://zyno-sportss.myshopify.com/pages/supplement" class="">read more</a></div>
+            </div>            
+          </div> 
+        </div>
+    </div>
+  </div>
+

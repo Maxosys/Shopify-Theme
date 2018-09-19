@@ -1,0 +1,40 @@
+<div class="modal__wrap">
+      <div class="create-account">
+        <div class="create-account-img"><img src="{{ "account.png" | asset_url }}"></div>
+        <h2>Create An Account</h2>
+ {% form 'create_customer' %}
+       
+
+          {{ form.errors | default_errors }}
+       
+          <div class="form-group">
+            <input type="text" placeholder="First Name" class="form-control" tabindex="1" id="name" {% if form.first_name %} name="customer[first_name]" value="{{ form.first_name }}" {% endif %} autofocus>
+          
+        </div>
+
+          <div class="form-group">
+            <input type="text" placeholder="Last Name" class="form-control" tabindex="1" id="lastname"{% if form.last_name %} name="customer[last_name]" value="{{ form.last_name }}" {% endif %}>
+          
+        </div>
+
+          <div class="form-group">
+            <input type="email" placeholder="Email Address" class="form-control {% if form.errors contains 'email' %} input--error{% endif %}" {% if form.email %} tabindex="1" id="email" name="customer[email]" value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off" required>
+          
+        </div>
+
+          <div class="form-group">
+            <input type="password" placeholder="Password" class="form-control{% if form.errors contains 'password' %} input--error{% endif %}" tabindex="2" id="password" name="customer[password]" required>
+          
+        </div>
+         
+                      
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <button type="submit" class="btn-register" value="{{ 'customer.register.submit' | t }}">Sign Up</button>
+              </div>
+            </div>
+          </div>
+        {% endform %}
+      </div>
+  </div>

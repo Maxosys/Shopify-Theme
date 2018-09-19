@@ -1,0 +1,315 @@
+ <div class="footer">
+    <div class="container">
+      <div class="col-sm-4">
+        <div class="footer-logo"><img src="{{ "footer-logo.png" | asset_url }}"></div>
+        <p>All statements have not been evaluated by the Food and Drug Administration. These products are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary.</p>
+        <h3>Payment Method</h3>
+        
+        <img src="{{ "payment.png" | asset_url }}">
+      </div>
+
+      <div class="col-sm-4">
+          <h3>Quick Links</h3>
+       
+          <ul class="footer-links">
+            {% for link in linklists.quick-links.links %}
+  			<li><font size="+1"><a href="{{ link.url }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></font></li>
+			{% endfor %}
+          </ul>
+        </div>
+
+
+         <div class="col-sm-4">
+          <h3>Sign up for our Newsletter</h3>
+          <p>Enter your email address below for exclusive discounts, promotions, and notifications!</p>
+           
+           {% form 'customer' %}
+        
+          {% if form.posted_successfully? %}
+            <p class="note form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+          {% else %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="input-group">
+            
+              <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email" class="form-control" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off" required="">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-theme" name="commit" id="subscribe">{{ 'general.newsletter_form.submit' | t }}</button>
+              </span>
+            </div>
+          {% endif %}
+        {% endform %}
+           
+        </div>
+ 
+           
+
+
+
+    </div>
+
+    <div class="bottom-footer">
+      <div class="container">
+        <div class="col-sm-6">
+          <div class="footer__social-block">
+            <ul>
+              <li><a class="link-facebook-footer" href="" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+              <li><a class="link-twitter-footer" href="" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+              <li><a class="link-twitter-footer" href="" title="Twitter"><i class="fa fa-youtube-play"></i></a></li>
+              <li><a class="link-twitter-footer" href="" title="Twitter"><i class="fa fa-instagram"></i></a></li>
+             
+            </ul>
+          </div>
+          <p class="copyright">© 2017 ZYNO SPORTS - All Rights Reserved <a href="" class="space"> Privacy</a> | <a href="" class="space">Terms</a> </p>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="img"><img src="{{ "footer-image.png" | asset_url }}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+
+<script>
+  
+    $(document).ready(function($){
+      
+        $("#testimonial-slider").owlCarousel({
+            items:2,
+            itemsDesktop:[1000,2],
+            itemsDesktopSmall:[980,2],
+            itemsTablet:[768,2],
+            itemsMobile:[650,1],
+            pagination:true,
+            navigation:false,
+            slideSpeed:1000,
+            autoPlay:true
+        });
+
+      });
+</script>
+
+
+
+<script>
+$(document).ready(function(){
+  $(".shopping-cart").hide();
+    $("#top-menu-cart-link").click(function(){
+        $(".shopping-cart").toggle();
+    });
+});
+</script>
+
+
+<script type="text/javascript">
+  
+let searchBox = document.getElementById('searchbox'),
+    searchInput = document.getElementById('search-input'),
+    searchClose = document.getElementById('searchbox-close'),
+    searchLink = document.getElementById('search');
+
+let searchToggle = () => {
+  if (searchBox.className === 'show') {
+    searchBox.className = 'hide';
+    searchLink.className = '';
+    searchInput.value = '';
+    searchInput.blur();
+  } else {
+    searchBox.className = 'show';
+    searchLink.className = 'activess';
+    searchInput.focus();
+  }
+}, searchEnter = () => {
+    if (event.keyCode == 13) {
+      searchToggle();
+    }
+};
+
+searchLink.addEventListener('click', searchToggle);
+searchClose.addEventListener('click', searchToggle);
+searchInput.addEventListener('keyup', searchEnter);
+
+
+
+</script>
+<script>
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "325px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function openNavR() {
+        document.getElementById("mySidenavR").style.width = "100%";
+    }
+
+    function closeNavR() {
+        document.getElementById("mySidenavR").style.width = "0";
+    }
+
+</script>
+
+
+<script type="text/javascript">
+  
+
+window.slate = window.slate || {};
+slate.header = {
+  init: function() {
+    var _self = this;
+    this.fixedHeader();
+    $(window).on('resize', function() {
+      _self.fixedHeader();
+      _self.makeSearchResultListScrollable();
+    });
+  },
+  fixedHeader: function() {
+    var $window = $(window);
+
+    if(
+      $('.header--fixed:not(.header05)')[0]
+      || ($('.header--fixed.header05')[0] && ($window.width() < 990))
+    ) {
+      var scrollAnchor = 0;
+      var $header = $('.header');
+
+      var headHeight = $header.outerHeight() + $header.offset().top;
+      var pos = headHeight;
+      //var pos = $('.header__main').offset().top || 10; // fixed
+
+      if($window.scrollTop() > pos) {
+        $header.addClass('header--sticky');
+      }
+
+      $window.on('scroll DOMMouseScroll', function() {
+        var scrollTop = $window.scrollTop();
+
+        if(scrollTop - scrollAnchor >= 5 || scrollTop - scrollAnchor <= -5 ) {
+          scrollAnchor = scrollTop;
+
+          if(scrollTop > pos) {
+            $header.addClass('header--sticky');
+          } else {
+            $header.removeClass('header--sticky');
+          }
+        }
+      });
+    } else {
+      $window.off('scroll DOMMouseScroll');
+    }
+  },
+};
+
+$(document).ready(function() {
+  slate.header.init();
+  $( window ).resize(function() {
+    slate.header.menuArrange();
+  });
+});
+
+
+</script>
+
+{{ 'jquery.flexslider-min.js' | asset_url | script_tag }}
+{{ 'jquery.flexslider.js' | asset_url | script_tag }}
+
+
+<script>
+  
+$(document).ready(function() {
+ 
+ $(".swatch-element").click(function() {
+   //alert('hello');
+    $(this).addClass('selected').siblings().removeClass('selected');
+    });
+     $('div.swatch-element:nth-child(2)').addClass('selected'); 
+ });
+
+  
+</script>
+
+
+
+
+<script type="text/javascript">
+   (function($) {
+    $(window).load(function(){
+      $('#slider').flexslider({
+        animation: "slide",
+        controlNav: false,
+        animationLoop: false,
+        slideshow: true,
+        sync: "#sliderr",
+        start: function(slider){
+          $('body').removeClass('loading');
+        }
+      });
+      $('#sliderr').flexslider({
+        animation: "slide",
+        controlNav: false,
+        animationLoop: false,
+        slideshow: true,
+        itemWidth: 210,
+        itemMargin: 5,
+        asNavFor: '#slider'
+      });
+    });
+     })(window.jQuery);
+  </script>
+<script>
+  $('input[name=id]').bind('change', function(){ 
+		
+	// Get the label of the radio button that was just clicked (this is the variant title)
+	var label = $('input[name=id]:checked + label').text(); 
+
+	// Check each image in the ImageContainer div
+	$('#ImageContainer .thumb img').each(function(){ 
+		// Check if the ALT text matches the label
+		if ($(this).attr("alt") == label) { 
+			// Replace the Featured image 'src' with the new image URL
+			$('#Featured img').attr("src", $(this).attr("src")); 
+		} 
+	}); 
+
+});
+  </script>
+
+
+
+
+
+{% schema %}
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "footer_linklist",
+        "label": "Primary menu",
+        "default": "footer"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_linklist_two",
+        "label": "Additional menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_newsletter_enable",
+        "label": "Show newsletter signup",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}

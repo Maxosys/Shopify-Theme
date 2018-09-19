@@ -1,0 +1,277 @@
+<header>
+    <div id="shopify-section-header" class="shopify-section">
+      <div class="announcement-bar announcement-bar--header02  announcement-bar--header-fixed ">
+        <div class="announcement">
+          <div class="container">
+            <div class="col-sm-4  medium-down--hide">
+              <div class="connect">
+                <div class="left">Free shipping on all orders over $50</div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="announcement__text text-center medium--text-left">Have a question? Call us now:  <a href="tel:+(213)2827293">+(213)2827293</a>
+              </div>
+            </div>
+            <div class="col-sm-4 small--hide text-right">
+              <div class="announcement__customer">
+                <ul id="header-uncached" class="la-fragment-header">
+                   <li> <a href="/account/register" class="top-nav-register">Register</a></li>
+                  <li> <a href="/account/login" class="top-nav-signin">Sign In</a></li>
+                  <li id="cart-dd-menu-item">
+                    <a data-cart-type="dropdown" href="#" id="top-menu-cart-link" class="header__cart-btn js-header-cart-btn"><i class="fa fa-shopping-basket"></i>My Cart <span>
+{% unless cart.item_count == 0 %}:{% endunless %}<span class="cart-count header-bar__cart-count{% if cart.item_count == 0 %} hidden-count{% endif %}">{{ cart.item_count }}</span>
+
+items <i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+                    <div style="float: right; cursor: pointer;">
+        <span class="glyphicon glyphicon-shopping-cart my-cart-icon"><span class="badge badge-notify my-cart-badge"></span></span>
+</div>
+                    <div class="cart-widget js-cart-widget">
+                      <div class="mini-cart mini-cart--dropdown">
+                        <div class="shopping-cart">
+                          <div class="shopping-cart-header">
+                            <span class="cart-icon">
+                            
+                            </span>
+                            <div class="shopping-cart-total">
+                              <span class="shopping-cart-total-label">Subtotal:</span>
+                              <span class="shopping-cart-total-value"> {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} {{ cart.total_price | money }}</span>
+                            </div>
+                          </div> <!--end shopping-cart-header -->
+                          {% if cart.item_count == 0 %}
+                          <ul class="shopping-cart-items">
+                            <li class="empty">
+                              <span class="empty-icon"><svg viewBox="0 0 512 512" class="icon icon-cart-outline" role="presentation" focusable="false" aria-hidden="true"><path d="M160 400c-13.248 0-24 10.752-24 24s10.752 24 24 24 24-10.752 24-24-10.752-24-24-24zm0 32c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zM384.5 400c-13.248 0-24 10.752-24 24s10.752 24 24 24 24-10.752 24-24-10.752-24-24-24zm0 32c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zM448 128L123.177 95.646c-1.628-6.972-4.369-14.66-11.838-20.667C102.025 67.489 86.982 64 64 64v16.001c18.614 0 31.167 2.506 37.312 7.447 4.458 3.585 5.644 8.423 7.165 15.989l-.024.004 42.052 233.638c2.413 14.422 7.194 25.209 13.291 32.986C171.043 379.312 180.533 384 192 384h240v-16H192c-4.727 0-19.136.123-25.749-33.755l-5.429-30.16L432 256l16-128zm-29.41 114.348l-260.601 45.99-31.732-176.3 303.869 30.608-11.536 99.702z"/></svg></span>Your cart is currently empty.
+                            </li>
+                            </ul>
+                          {% else %} 
+                             {% for item in cart.items %}
+        <div id="item-{{ item.id }}" class="item clearfix">
+          <div class="image-wrap">
+            <img alt="{{ item.product.title }}" src="{{ item | img_url: 'small' }}">
+            <a class="{% if settings.product-image-borders %}overlay{% endif %}" href="{{ item.url }}"></a>
+          </div>
+          <p class="smalll--hide">
+                  <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="btn btn--small btn--secondary cart__remove">X</a>
+                </p>
+          <div class="details">
+            {% if settings.show-brand-names %}
+              <p class="brand">{{ item.vendor | link_to_vendor }}</p>
+            {% endif %}
+            <p class="title"><a href="{{ item.url }}">{{ item.product.title }}</a><span class="quantity">× {{ item.quantity }}</span></p>
+            <p class="price"><span class="money">{{ item.line_price | money }}</span></p>
+            {% unless item.variant.title == 'Default Title' %}<p class="variant">{{ item.variant.title }}</p>{% endunless %}
+            {% if item.properties %}
+              {% for property in item.properties %}
+                {% unless property.last == blank %}
+                  <p class="property">
+                    <span class="property-label">{{ property.first }}:</span>
+                    {% if property.last contains '/uploads/' %}
+                      <a class="property-image" href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+                    {% else %}
+                      <span class="property-value">{{ property.last }}</span>
+                    {% endif %}
+                  </p>
+                {% endunless %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+                          
+                          <div class="shopping-cart-footer">
+                            <a class="btn btn--rounded btn--block shopping-cart-checkout" href="/cart">View Cart</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="header header02  header--fixed   header--announcement">
+        <div class="header__main">
+          <div class="container">
+              <div class="grid__item one-whole hide">
+                <div role="banner">
+                  <h1 itemscope="" itemtype="" class="logo">
+                      <a href="https://zyno-sportss.myshopify.com" itemprop="url" class="site-logo site-header__logo-image">
+                        
+                        <span>&nbsp; </span><img src="{{ "logo.png" | asset_url }}" srcset="" alt="" itemprop="logo">
+                      </a>
+                  </h1>
+                </div>
+              </div>
+              <div class="header__extra  hide" >
+                 
+                  <div class="header__cart__wrapper">
+                    <a class="header__cart-btn js-header-cart-btn" href="/cart" data-cart-type="dropdown">
+                      <i class="fa fa-shopping-basket"></i>
+                      <span class="js-cart-count">{{ cart.item_count }}</span>
+                    </a>
+                    <div class="cart-widget js-cart-widget">
+                      <div class="mini-cart mini-cart--dropdown">
+                        <div class="shopping-cart">
+                          <div class="shopping-cart-header">
+                            <span class="cart-icon">
+                            </span>
+                            <div class="shopping-cart-total">
+                              <span class="shopping-cart-total-label">Subtotal:</span>
+                              <span class="shopping-cart-total-value"> {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} {{ cart.total_price | money }}</span>
+                            </div>
+                          </div> <!--end shopping-cart-header -->
+                          <ul class="shopping-cart-items"><li class="empty">
+                          <span class="empty-icon"><svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-cart-outline" viewBox="0 0 512 512"><path d="M160 400c-13.248 0-24 10.752-24 24s10.752 24 24 24 24-10.752 24-24-10.752-24-24-24zm0 32c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zM384.5 400c-13.248 0-24 10.752-24 24s10.752 24 24 24 24-10.752 24-24-10.752-24-24-24zm0 32c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zM448 128L123.177 95.646c-1.628-6.972-4.369-14.66-11.838-20.667C102.025 67.489 86.982 64 64 64v16.001c18.614 0 31.167 2.506 37.312 7.447 4.458 3.585 5.644 8.423 7.165 15.989l-.024.004 42.052 233.638c2.413 14.422 7.194 25.209 13.291 32.986C171.043 379.312 180.533 384 192 384h240v-16H192c-4.727 0-19.136.123-25.749-33.755l-5.429-30.16L432 256l16-128zm-29.41 114.348l-260.601 45.99-31.732-176.3 303.869 30.608-11.536 99.702z"></path></svg></span>
+                          Your cart is currently empty.
+                        </li></ul>
+                        <div class="shopping-cart-footer">
+                          <a href="/cart" class="btn btn--rounded btn--block shopping-cart-checkout">View Cart</a>
+                        </div>
+                       </div>
+                       </div>
+                    </div>
+                  </div>
+              </div>
+             <div class="header__off-canvas large-up--hide">
+                <a href="javascript:" class="header__off-canvas-btn js-mobile-nav-open" onclick="openNav()">
+                  <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bars" viewBox="0 0 19 22"><path d="M18.857 16.5v1.571c0 .43-.356.786-.786.786H.785a.791.791 0 0 1-.786-.786V16.5c0-.43.356-.786.786-.786h17.286c.43 0 .786.356.786.786zm0-6.286v1.571c0 .43-.356.786-.786.786H.785a.791.791 0 0 1-.786-.786v-1.571c0-.43.356-.786.786-.786h17.286c.43 0 .786.356.786.786zm0-6.285V5.5c0 .43-.356.786-.786.786H.785A.791.791 0 0 1-.001 5.5V3.929c0-.43.356-.786.786-.786h17.286c.43 0 .786.356.786.786z"></path></svg>
+                </a>
+              </div>
+              <nav class="left-nav">
+                 <ul>
+                {% for link in linklists.Zyno-main-menu-left.links %}
+                    <li class="medium-down--hide"><font size="+1"><a href="{{ link.url }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></font></li>
+                {% endfor %}
+                </ul>
+              </nav>
+              <a href="https://zyno-sportss.myshopify.com" class="logo">ZYNO SPORTS</a>
+              <nav class="right">
+                  <ul>
+                    {% for link in linklists.Zyno-main-menu-right.links %}
+  					 <li class="medium-down--hide"><font size="+1"><a href="{{ link.url }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></font></li>
+					{% endfor %}
+                    <a class="header__search-btn js_header__search-btn" id="search"><i class="fa fa-search" aria-hidden="true"></i></a>
+                    
+                  </ul>
+              </nav>
+            <div id="searchbox">
+          <svg id="searchbox-close" class="close" viewbox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+          <form action="/search" method="get" role="search" class="search">
+              <input id="search-input" type="text" name="q" placeholder="Search..." />
+            </form>
+        </div>
+          </div>
+        </div>
+        
+        
+        
+
+          
+      </div>
+
+      <!-- mobile-header -->
+      <div id="mySidenav" class="sidenav">
+  <div class="sidr-inner">
+    <a href="javascript:void(0)" class="closebtn mobile-nav__close js-mobile-nav-close" onclick="closeNav()"><i aria-hidden="true" class="fa fa-times"></i></a>
+    <div class="call-us"> Have a question? Call us now:<a href="tel:+(213)2827293">+(213)2827293</a></div>
+    <div class="mobile-menu__inner">
+      <nav role="navigation">
+        <ul class="mobile-nav">
+          {% for link in linklists.responsive-menu.links %}
+  					 <li><font size="+1"><a href="{{ link.url }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a></font></li>
+					{% endfor %}
+        </ul>
+      </nav>
+      <div class="bottom" id="footer-bottom-holepunch-mobile"><a href="#" id="side-menu-cart-link" class="shopping-carts la-fragment-mobile_footer">Shopping Cart <span>{{ cart.item_count }}</span></a>
+        <a href="/account/login" id="side-nav-signin" class="sign-in la-fragment-mobile_footer">Sign In</a>
+        <a href="/account/register" id="side-nav-register" class="register la-fragment-mobile_footer">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
+      <!-- mobile-header -->
+    </div>
+  </header>
+
+
+
+
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "radio",
+        "id": "align_logo",
+        "label": "Logo alignment",
+        "default": "left",
+        "options": [
+          {"value": "left", "label": "Left"},
+          {"value": "center", "label": "Centered"}
+        ]
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "text",
+        "id": "logo_max_width",
+        "label": "Custom logo width (in pixels)",
+        "default": "100"
+      },
+      {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "header",
+        "content": "Announcement bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "message",
+        "label": "Show announcement",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "home_page_only",
+        "label": "Home page only",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "message_text",
+        "label": "Announcement text",
+        "default": "Announce something here"
+      },
+      {
+        "type": "url",
+        "id": "message_link",
+        "label": "Announcement link",
+        "info": "Optional"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Bar",
+        "default": "#7796a8"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#fff"
+      }
+    ]
+  }
+{% endschema %}

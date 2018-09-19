@@ -1,0 +1,95 @@
+<div class="modal__wrap">
+      <div class="create-account">
+        <div class="create-account-img"><img src="{{ "login.png" | asset_url }}"></div>
+        <h2>Sign In To <br> Your Account</h2>
+		 <div class="note form-success hide" id="ResetSuccess">
+        {{ 'customer.recover_password.success' | t }}
+      </div>
+        {% form 'customer_login' %}
+       
+
+          {{ form.errors | default_errors }}
+          <div class="form-group">
+            <input type="text" value="" placeholder="Username or Email Address..." class="form-control{% if form.errors contains 'email' %} input--error{% endif %}" tabindex="1" id="name" name="customer[email]" autocorrect="off" autocapitalize="off" autofocus>
+        
+        </div>
+
+          <div class="form-group">
+            {% if form.password_needed %}
+            <input type="password" placeholder="Password" class="form-control {% if form.errors contains 'password' %} input--error{% endif %}" tabindex="2" id="password" name="customer[password]">
+         {% endif %}
+  
+        </div>
+          <div class="lostpass-or-rember">
+            <div class="checkbox checkbox-primary">
+              <input id="checkbox2" type="checkbox">
+              <label for="checkbox2">Remember Me</label>
+            </div>
+             {% if form.password_needed %}
+            <a class="lostLink" href="#recover" id="RecoverPassword">Forget password?</a>
+            
+            {% endif %}
+            
+          </div>
+
+
+                      
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <button type="submit" class="btn-register" value="{{ 'customer.login.sign_in' | t }}">Log in</button>
+              </div>
+            </div>
+          </div>
+       <div id="RecoverPasswordForm" class="hide">
+
+        <div class="text-center">
+          <h2>{{ 'customer.recover_password.title' | t }}</h2>
+          <p>{{ 'customer.recover_password.subtext' | t }}</p>
+        </div>
+
+        <div class="form-vertical">
+          {% form 'recover_customer_password' %}
+
+            {{ form.errors | default_errors }}
+
+            {% comment %}
+              Add a hidden span to indicate the form was submitted succesfully.
+            {% endcomment %}
+            {% if form.posted_successfully? %}
+              <span class="hide reset-password-success"></span>
+            {% endif %}
+
+            <!--<label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>-->
+            <input type="email" value="" name="email" id="RecoverEmail" placeholder="Email" class="input-full"autocorrect="off" autocapitalize="off">
+
+            <div class="customerrecover">
+              <p class="passsbt">
+                <input type="submit" class="btn-pwd" value="{{ 'customer.recover_password.submit' | t }}">
+              </p>
+
+              <button type="button" id="HideRecoverPasswordLink" class="btn-text-link">{{ 'customer.recover_password.cancel' | t }}</button>
+            </div>
+          {% endform %}
+        </div>
+
+      </div>
+
+       {% endform %}
+         {% comment %}
+        If accounts are set as optional, the following will be shown as an option
+        during checkout, not on the default /login page.
+      {% endcomment %}
+      {% if shop.checkout.guest_login %}
+        <div class="text-center">
+          <hr class="hr--invisible">
+          <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+          {% form 'guest_login' %}
+            <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+          {% endform %}
+        </div>
+      {% endif %}
+        
+      </div>
+  </div>
